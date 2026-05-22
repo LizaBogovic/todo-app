@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.dto.TaskUpsertRequest;
 import com.example.demo.mapper.TaskEntity;
 import com.example.demo.repository.TaskRepository;
+import com.example.demo.service.support.TaskDefaults;
 import com.example.demo.service.validation.TaskWriteValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -46,15 +47,7 @@ public class TaskService {
         apply(request, task);
 
         TaskDefaults.applyForCreate(task);
-        // Добавить класс: com.example.demo.service.support.TaskDefaults
-        // Добавить методы:
-        // 1. applyForCreate(TaskEntity task)
-        // Что должен делать:
-        // 1. Выставлять дефолтный timeoutSeconds, если он не был рассчитан из запроса.
-        // 2. Подставлять базовую configuration для известных типов задач.
-        // 3. Доводить сущность до валидного состояния перед save.
-        // Лучшее расположение в проекте:
-        // src/main/java/com/example/demo/service/support/TaskDefaults.java
+
 
         return taskRepository.save(task);
     }
