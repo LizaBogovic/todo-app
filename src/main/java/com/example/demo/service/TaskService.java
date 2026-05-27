@@ -33,7 +33,7 @@ public class TaskService {
         TaskWriteValidator.validateForCreate(request);
         // Добавить класс: com.example.demo.service.validation.TaskWriteValidator
         // Добавить методы:
-        // 1. validateForCreate(TaskUpsertRequest request)
+        // 1. validateForCreate(TaskUpsertRequest request) +
         // 2. validateForUpdate(TaskUpsertRequest request, TaskEntity current)
         // Что должны делать:
         // 1. Проверять, что name/type не пустые после trim.
@@ -58,24 +58,14 @@ public class TaskService {
 
         String normalizedName = normalizeRequiredText(request.name());
         String normalizedDescription = normalizeOptionalText(request.description());
-        String normalizedType = TaskTypeCatalog.normalize(request.type());
-        // Добавить класс: com.example.demo.domain.task.TaskTypeCatalog
-        // Добавить методы:
-        // 1. normalize(String rawType)
-        // 2. exists(String type)
-        // 3. defaultConfigurationFor(String type)
-        // Что должны делать:
-        // 1. Приводить тип к каноническому виду.
-        // 2. Хранить список поддерживаемых типов задач.
-        // 3. Отдавать дефолтную configuration для каждого типа.
-        // Лучшее расположение в проекте:
-        // src/main/java/com/example/demo/domain/task/TaskTypeCatalog.java
+        //String normalizedType = TaskTypeCatalog.normalize(request.type());
 
-        String normalizedSchedule = TaskSchedulePolicy.normalize(
+
+       /* String normalizedSchedule = TaskSchedulePolicy.normalize(
                 request.scheduleExpression(),
                 request.enabled(),
                 normalizedType
-        );
+        );*/
         // Добавить метод в существующий класс: com.example.demo.dto.TaskUpsertRequest#scheduleExpression()
         // Что должен делать:
         // 1. Возвращать исходную cron/rrule-строку из запроса на создание/обновление задачи.
@@ -93,10 +83,10 @@ public class TaskService {
         // Лучшее расположение в проекте:
         // src/main/java/com/example/demo/service/support/TaskSchedulePolicy.java
 
-        Map<String, Object> normalizedConfiguration = TaskConfigurationSanitizer.sanitize(
+       /* Map<String, Object> normalizedConfiguration = TaskConfigurationSanitizer.sanitize(
                 request.configuration(),
                 normalizedType
-        );
+        );*/
         // Добавить метод в существующий класс: com.example.demo.dto.TaskUpsertRequest#configuration()
         // Что должен делать:
         // 1. Возвращать конфигурацию задачи из JSON-подобного payload.
@@ -114,10 +104,10 @@ public class TaskService {
         // Лучшее расположение в проекте:
         // src/main/java/com/example/demo/service/support/TaskConfigurationSanitizer.java
 
-        int resolvedTimeoutSeconds = TaskTimeoutPolicy.resolve(
+       /* int resolvedTimeoutSeconds = TaskTimeoutPolicy.resolve(
                 request.timeoutSeconds(),
                 normalizedType
-        );
+        );*/
         // Добавить метод в существующий класс: com.example.demo.dto.TaskUpsertRequest#timeoutSeconds()
         // Что должен делать:
         // 1. Возвращать пользовательский timeout для выполнения задачи.
@@ -136,11 +126,11 @@ public class TaskService {
 
         task.setName(normalizedName);
         task.setDescription(normalizedDescription);
-        task.setType(normalizedType);
+        /*task.setType(normalizedType);
         task.setScheduleExpression(normalizedSchedule);
         task.setConfiguration(normalizedConfiguration);
         task.setEnabled(request.enabled());
-        task.setTimeoutSeconds(resolvedTimeoutSeconds);
+        task.setTimeoutSeconds(resolvedTimeoutSeconds);*/
         task.setUpdatedAt(Instant.now());
     }
 

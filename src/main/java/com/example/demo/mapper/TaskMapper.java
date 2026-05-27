@@ -1,6 +1,8 @@
 package com.example.demo.mapper;
 
+import com.example.demo.dto.TaskRequestDto;
 import com.example.demo.dto.TaskResponse;
+import com.example.demo.dto.TaskResponseDto;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,5 +21,26 @@ public class TaskMapper {
                 task.getCreatedAt(),
                 task.getUpdatedAt()
         );
+    }
+
+    public static TodoEntity fromDto(TaskRequestDto dto) {
+        TodoEntity task = new TodoEntity();
+        task.setTitle(dto.title());
+        task.setDescription(dto.description());
+        task.setPriority(dto.priority());
+        task.setCategory(dto.category());
+        task.setDeadline(dto.deadline());
+        return task;
+    }
+
+    public static TaskResponseDto toDto(TodoEntity entity) {
+        return TaskResponseDto.builder()
+                .id(entity.getId())
+                .title(entity.getTitle())
+                .description(entity.getDescription())
+                .priority(entity.getPriority())
+                .category(entity.getCategory())
+                .deadline(entity.getDeadline())
+                .build();
     }
 }

@@ -15,7 +15,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "task_entity")
+@Table(name = "tasks")
 
 public class TaskEntity {
     @Id
