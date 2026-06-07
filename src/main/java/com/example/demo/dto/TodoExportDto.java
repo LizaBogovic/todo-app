@@ -1,0 +1,16 @@
+package com.example.demo.dto;
+
+import com.example.demo.domain.todo.Category;
+import com.example.demo.domain.todo.Priority;
+import lombok.Builder;
+
+import java.time.LocalDate;
+@Builder
+public record TodoExportDto(Integer id,
+                            String title,
+                            String description,
+                            Priority priority,
+                            Category category,
+                            LocalDate deadline) {
+
+}

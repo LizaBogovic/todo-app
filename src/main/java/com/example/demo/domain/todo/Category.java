@@ -1,4 +1,4 @@
-package com.example.demo.domain.task;
+package com.example.demo.domain.todo;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -19,13 +19,12 @@ public enum Category {
     public static Category fromString(String value) {
         if (value == null) return null;
 
-        for (Category priority : Category.values()) {
-            // Matches 'medium' to MEDIUM or 'Medium' to Medium
-            if (priority.name().equalsIgnoreCase(value) || priority.code.equalsIgnoreCase(value)) {
-                return priority;
+        for (Category category : Category.values()) {
+            if (category.name().equalsIgnoreCase(value) || category.code.equalsIgnoreCase(value)) {
+                return category;
             }
         }
-        throw new IllegalArgumentException("Unknown priority: " + value);
+        throw new IllegalArgumentException("Unknown category: " + value);
     }
 
     @JsonValue

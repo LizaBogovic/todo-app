@@ -1,4 +1,4 @@
-package com.example.demo.domain.task;
+package com.example.demo.domain.todo;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -19,7 +19,6 @@ public enum Priority {
         if (value == null) return null;
 
         for (Priority priority : Priority.values()) {
-            // Matches 'medium' to MEDIUM or 'Medium' to Medium
             if (priority.name().equalsIgnoreCase(value) || priority.code.equalsIgnoreCase(value)) {
                 return priority;
             }

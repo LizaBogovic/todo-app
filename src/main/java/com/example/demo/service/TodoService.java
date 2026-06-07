@@ -5,7 +5,9 @@ import com.example.demo.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 @Service
@@ -16,31 +18,51 @@ public class TodoService {
 
     @Transactional
     public TodoEntity create(TodoEntity entity) {
+        Objects.requireNonNull(entity, "todo must not be null");
+
         apply(entity);
         return todoRepository.save(entity);
     }
 
+    @Transactional
+    public void remove(Integer id) {
+        Objects.requireNonNull(id, "todo id must not be null");
+
+        TodoEntity persisted = todoRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Todo not found: " + id));
+        todoRepository.delete(persisted);
+    }
+
+    @Transactional(readOnly = true)
     public List<TodoEntity> getAll() {
         return todoRepository.findAll();
     }
+
+    @Transactional(readOnly = true)
+    public TodoEntity get(Integer id) {
+        Objects.requireNonNull(id, "todo id must not be null");
+
+        return todoRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Todo not found: " + id));
+    }
+
     @Transactional
     private void apply(TodoEntity todo) {
-        normalizeRequiredText(todo.getTitle());
-        normalizeOptionalText(todo.getDescription());
+        Objects.requireNonNull(todo, "todo must not be null");
+        Objects.requireNonNull(todo.getPriority(), "todo priority must not be null");
+        Objects.requireNonNull(todo.getCategory(), "todo category must not be null");
+        Objects.requireNonNull(todo.getDeadline(), "todo deadline must not be null");
 
-        Objects.requireNonNull(todo, "request must not be null");
-        Objects.requireNonNull(todo, "task must not be null");
+        String normalizedTitle = normalizeRequiredText(todo.getTitle());
+        String normalizedDescription = normalizeOptionalText(todo.getDescription());
 
-        todo.setTitle(todo.getTitle());
-        todo.setDescription(todo.getDescription());
-        todo.setCategory(todo.getCategory());
-        todo.setPriority(todo.getPriority());
-        todo.setDeadline(todo.getDeadline());
-        todoRepository.save(todo);
+        // Persist normalized values so validation and stored data stay in sync.
+        todo.setTitle(normalizedTitle);
+        todo.setDescription(normalizedDescription);
     }
 
 
-    private String normalizeRequiredText (String value){
+    private String normalizeRequiredText(String value) {
         String normalized = normalizeOptionalText(value);
         if (normalized == null) {
             throw new IllegalArgumentException("Required text value must not be blank");
@@ -48,11 +70,11 @@ public class TodoService {
         return normalized;
     }
 
-    private String normalizeOptionalText (String value){
+    private String normalizeOptionalText(String value) {
         return blankToNull(value == null ? null : value.trim());
     }
 
-    private String blankToNull (String value){
+    private String blankToNull(String value) {
         if (value == null || value.isBlank()) {
             return null;
         }

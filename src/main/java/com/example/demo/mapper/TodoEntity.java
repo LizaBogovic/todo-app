@@ -1,7 +1,7 @@
 package com.example.demo.mapper;
 
-import com.example.demo.domain.task.Category;
-import com.example.demo.domain.task.Priority;
+import com.example.demo.domain.todo.Category;
+import com.example.demo.domain.todo.Priority;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +19,7 @@ import java.time.LocalDate;
 public class TodoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(nullable = false, length = 100)
     private String title;
