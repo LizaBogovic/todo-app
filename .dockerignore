@@ -4,3 +4,10 @@ build
 .idea
 .DS_Store
 *.log
+**/.DS_Store
+out
+target
+*.iml
+docker-compose*.yml
+README.md
+HELP.md
